@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
+import errorhandling.MissingInputException;
 import errorhandling.PersonNotFoundException;
 import facades.PersonFacade;
 import utils.EMF_Creator;
@@ -47,7 +48,7 @@ public class PersonResource {
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response addPerson(String str) {
+    public Response addPerson(String str) throws MissingInputException {
         PersonDTO pDTO = GSON.fromJson(str, PersonDTO.class);
         PersonDTO result = FACADE.addPerson(pDTO.getFirstName(), pDTO.getLastName(), pDTO.getPhone());
         return Response.ok().entity(GSON.toJson(result)).build();
@@ -57,7 +58,7 @@ public class PersonResource {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response editPerson(@PathParam("id") Integer id, String str) {
+    public Response editPerson(@PathParam("id") Integer id, String str) throws PersonNotFoundException, MissingInputException {
         PersonDTO pDTO = GSON.fromJson(str, PersonDTO.class);
         pDTO.setId(id);
         PersonDTO result = FACADE.editPerson(pDTO);
@@ -67,7 +68,7 @@ public class PersonResource {
     @DELETE
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response deletePerson(@PathParam("id") Integer id) {
+    public Response deletePerson(@PathParam("id") Integer id) throws PersonNotFoundException {
         PersonDTO result = FACADE.deletePerson(id);
         return Response.ok().entity(GSON.toJson(result)).build();
     }
