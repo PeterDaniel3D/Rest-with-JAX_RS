@@ -17,11 +17,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-/**
- *
- * @author jobe
- */
-
 @Provider
 public class GenericExceptionMapper implements ExceptionMapper<Throwable>  {
   static Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -52,5 +47,4 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable>  {
         return Response.Status.INTERNAL_SERVER_ERROR;
 
     }
-        
 }

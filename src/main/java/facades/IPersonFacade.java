@@ -3,8 +3,6 @@ package facades;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
 
-import java.util.List;
-
 public interface IPersonFacade {
     public PersonDTO addPerson(String fName, String lName, String phone);
 
