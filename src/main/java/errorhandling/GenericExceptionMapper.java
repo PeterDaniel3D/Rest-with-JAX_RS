@@ -7,6 +7,7 @@ package errorhandling;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
@@ -18,8 +19,10 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class GenericExceptionMapper implements ExceptionMapper<Throwable>  {
-  static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
+    static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    ExceptionDTO err;
+
     @Context
     ServletContext context;
 
@@ -27,14 +30,18 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable>  {
     public Response toResponse(Throwable ex) {
         Logger.getLogger(GenericExceptionMapper.class.getName()).log(Level.SEVERE, null, ex);
         Response.StatusType type = getStatusType(ex);
-        ExceptionDTO err;
-        if (ex instanceof WebApplicationException) {
-            err = new ExceptionDTO(type.getStatusCode(), ((WebApplicationException) ex).getMessage());
-        } else {
+        int statusCode = type.getStatusCode();
 
-            err = new ExceptionDTO(type.getStatusCode(), type.getReasonPhrase());
+        if (ex instanceof PersonNotFoundException) {
+            statusCode = ((PersonNotFoundException) ex).getStatusCode();
+            err = new ExceptionDTO(statusCode, ex.getMessage());
+        } else if (ex instanceof WebApplicationException) {
+            err = new ExceptionDTO(statusCode, ((WebApplicationException) ex).getMessage());
+        } else {
+            err = new ExceptionDTO(statusCode, type.getReasonPhrase());
         }
-        return Response.status(type.getStatusCode())
+
+        return Response.status(statusCode)
                 .entity(gson.toJson(err))
                 .type(MediaType.APPLICATION_JSON).
                 build();

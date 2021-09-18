@@ -4,6 +4,7 @@ import dtos.PersonDTO;
 
 import dtos.PersonsDTO;
 import entities.Person;
+import errorhandling.PersonNotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -61,9 +62,13 @@ public class PersonFacade implements IPersonFacade {
     }
 
     @Override
-    public PersonDTO getPerson(int id) {
+    public PersonDTO getPerson(int id) throws PersonNotFoundException {
         EntityManager em = getEntityManager();
-        return new PersonDTO(em.find(Person.class, id));
+        Person person = em.find(Person.class, id);
+        if (person == null) {
+            throw new PersonNotFoundException(404, "message: No person with provided id found");
+        }
+        return new PersonDTO(person);
     }
 
     @Override

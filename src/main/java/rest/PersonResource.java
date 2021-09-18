@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
+import errorhandling.PersonNotFoundException;
 import facades.PersonFacade;
 import utils.EMF_Creator;
 
@@ -38,7 +39,7 @@ public class PersonResource {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getPerson(@PathParam("id") Integer id) {
+    public Response getPerson(@PathParam("id") Integer id) throws PersonNotFoundException {
         PersonDTO pDTO = FACADE.getPerson(id);
         return Response.ok().entity(GSON.toJson(pDTO)).build();
     }
