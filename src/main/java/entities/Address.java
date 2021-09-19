@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 @Table(name = Address.TABLE_NAME)
 @Entity
+@NamedQuery(name = "Address.deleteAllRows", query = "DELETE from Address")
 public class Address implements Serializable {
     public static final String TABLE_NAME = "address";
     private static final long serialVersionUID = 1L;
