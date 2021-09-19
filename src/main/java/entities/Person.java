@@ -40,6 +40,16 @@ public class Person implements Serializable {
         this.lastEdited = created;
     }
 
+    // Test only
+    public Person(String firstName, String lastName, String phone, Address address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.created = new Date();
+        this.lastEdited = created;
+        this.address = address;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -45,7 +45,7 @@ public class Address implements Serializable {
         this.street = street;
     }
 
-    public int getZip() {
+    public Integer getZip() {
         return zip;
     }
 

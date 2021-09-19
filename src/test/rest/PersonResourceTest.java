@@ -1,5 +1,7 @@
 package rest;
 
+import dtos.PersonDTO;
+import entities.Address;
 import entities.Person;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
@@ -18,13 +20,14 @@ import java.net.URI;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.Matchers.hasSize;
 
 class PersonResourceTest {
 
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
-    private static Person p1, p2;
+    private static Person p1, p2, p3;
+    private static Address a1, a2, a3;
 
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
@@ -57,11 +60,22 @@ class PersonResourceTest {
         EntityManager em = emf.createEntityManager();
         p1 = new Person("PF1", "PL1", "11111111");
         p2 = new Person("PF2", "PL2", "22222222");
+        p3 = new Person("PF3", "PL3", "33333333");
+
+        a1 = new Address("ADR1", 1000, "BY1");
+        a2 = new Address("ADR2", 2000, "BY2");
+        a3 = new Address("ADR3", 3000, "BY3");
+
+        p1.setAddress(a1);
+        p2.setAddress(a2);
+        p3.setAddress(a3);
+
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.persist(p1);
             em.persist(p2);
+            em.persist(p3);
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -80,25 +94,74 @@ class PersonResourceTest {
 
     @Test
     void demo() {
+        given()
+                .contentType("application/json")
+                .get("/person").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("msg", equalTo("Hello World"));
     }
 
     @Test
     void getAllPersons() {
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .get("/person/all").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("all", hasSize(3));
     }
 
     @Test
     void getPerson() {
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .get("/person/" + p1.getId()).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("firstName", equalTo("PF1"));
     }
 
     @Test
     void addPerson() {
+        PersonDTO pTest = new PersonDTO(new Person("Test1", "Test2", "12345678", a1));
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(pTest)
+                .when()
+                .post("/person").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("firstName", equalTo("Test1"))
+                .body("lastName", equalTo("Test2"))
+                .body("phone", equalTo("12345678"));
     }
 
     @Test
     void editPerson() {
+        PersonDTO pTest = new PersonDTO(new Person("Test1", "Test2", "12345678", a3));
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(pTest)
+                .when()
+                .put("/person/" + p1.getId()).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("firstName", equalTo("Test1"))
+                .body("lastName", equalTo("Test2"))
+                .body("phone", equalTo("12345678"));
     }
 
     @Test
     void deletePerson() {
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .delete("/person/" + p1.getId()).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("firstName", equalTo("PF1"));
+
     }
 }
