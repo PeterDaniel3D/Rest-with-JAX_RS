@@ -14,4 +14,9 @@ public class PersonsDTO {
             all.add(new PersonDTO(p));
         });
     }
+
+    // Test only
+    public int getSize() {
+        return all.size() ;
+    }
 }

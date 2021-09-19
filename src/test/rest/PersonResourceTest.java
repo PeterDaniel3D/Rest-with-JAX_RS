@@ -125,11 +125,11 @@ class PersonResourceTest {
 
     @Test
     void addPerson() {
-        PersonDTO pTest = new PersonDTO(new Person("Test1", "Test2", "12345678", a1));
+        PersonDTO expected = new PersonDTO(new Person("Test1", "Test2", "12345678"));
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(pTest)
+                .body(expected)
                 .when()
                 .post("/person").then()
                 .assertThat()
@@ -141,11 +141,11 @@ class PersonResourceTest {
 
     @Test
     void editPerson() {
-        PersonDTO pTest = new PersonDTO(new Person("Test1", "Test2", "12345678", a3));
+        PersonDTO expected = new PersonDTO(new Person("Test1", "Test2", "12345678"));
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(pTest)
+                .body(expected)
                 .when()
                 .put("/person/" + p1.getId()).then()
                 .assertThat()
