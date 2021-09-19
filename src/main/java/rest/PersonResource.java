@@ -62,21 +62,6 @@ public class PersonResource {
         }
         return Response.ok().entity(GSON.toJson(result)).build();
     }
-//
-//    @POST
-//    @Produces({MediaType.APPLICATION_JSON})
-//    @Consumes({MediaType.APPLICATION_JSON})
-//    public Response addPersonAddress(String str) throws MissingInputException {
-//        PersonDTO pDTO = GSON.fromJson(str, PersonDTO.class);
-//        PersonDTO result = FACADE.addPersonAddress(
-//                pDTO.getFirstName(),
-//                pDTO.getLastName(),
-//                pDTO.getPhone(),
-//                pDTO.getStreet(),
-//                pDTO.getZip(),
-//                pDTO.getCity());
-//        return Response.ok().entity(GSON.toJson(result)).build();
-//    }
 
     @PUT
     @Path("{id}")

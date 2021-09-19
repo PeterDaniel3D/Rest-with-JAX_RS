@@ -1,6 +1,5 @@
 package dtos;
 
-import entities.Address;
 import entities.Person;
 
 public class PersonDTO {
