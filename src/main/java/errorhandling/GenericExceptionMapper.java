@@ -35,11 +35,14 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
         if (ex instanceof PersonNotFoundException) {
             statusCode = ((PersonNotFoundException) ex).getStatusCode();
             err = new ExceptionDTO(statusCode, ex.getMessage());
+            System.out.println(ex.getMessage());
         } else if (ex instanceof MissingInputException) {
             statusCode = ((MissingInputException) ex).getStatusCode();
             err = new ExceptionDTO(statusCode, ex.getMessage());
+        } else if (ex instanceof RuntimeException) {
+            err = new ExceptionDTO(statusCode, "Internal Server Problem. We are sorry for the inconvenience");
         } else if (ex instanceof WebApplicationException) {
-            err = new ExceptionDTO(statusCode, ((WebApplicationException) ex).getMessage());
+            err = new ExceptionDTO(statusCode, ex.getMessage());
         } else {
             err = new ExceptionDTO(statusCode, type.getReasonPhrase());
         }
@@ -55,6 +58,5 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
             return ((WebApplicationException) ex).getResponse().getStatusInfo();
         }
         return Response.Status.INTERNAL_SERVER_ERROR;
-
     }
 }
