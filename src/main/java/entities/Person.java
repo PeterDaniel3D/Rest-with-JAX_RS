@@ -19,8 +19,15 @@ public class Person implements Serializable {
     private String firstName;
     private String lastName;
     private String phone;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date created;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date lastEdited;
+
+    @OneToOne
+    private Address address;
 
     public Person() {
     }
@@ -79,15 +86,14 @@ public class Person implements Serializable {
         this.lastEdited = new Date();
     }
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", created=" + created +
-                ", lastEdited=" + lastEdited +
-                '}';
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+        if (address != null) {
+            address.setPerson(this);
+        }
     }
 }

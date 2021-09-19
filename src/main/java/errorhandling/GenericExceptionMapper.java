@@ -35,7 +35,6 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
         if (ex instanceof PersonNotFoundException) {
             statusCode = ((PersonNotFoundException) ex).getStatusCode();
             err = new ExceptionDTO(statusCode, ex.getMessage());
-            System.out.println(ex.getMessage());
         } else if (ex instanceof MissingInputException) {
             statusCode = ((MissingInputException) ex).getStatusCode();
             err = new ExceptionDTO(statusCode, ex.getMessage());

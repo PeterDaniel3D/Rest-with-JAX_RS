@@ -5,6 +5,7 @@
  */
 package facades;
 
+import entities.Address;
 import entities.Person;
 import utils.EMF_Creator;
 
@@ -19,6 +20,14 @@ public class Populator {
         Person p1 = new Person("PF1", "PL1", "11111111");
         Person p2 = new Person("PF2", "PL2", "22222222");
         Person p3 = new Person("PF3", "PL3", "33333333");
+
+        Address a1 = new Address("ADR1", 1000, "BY1");
+        Address a2 = new Address("ADR2", 2000, "BY2");
+        Address a3 = new Address("ADR3", 3000, "BY3");
+
+        p1.setAddress(a1);
+        p2.setAddress(a2);
+        p3.setAddress(a3);
 
         try {
             em.getTransaction().begin();

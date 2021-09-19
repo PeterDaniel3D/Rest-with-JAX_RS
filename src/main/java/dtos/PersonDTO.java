@@ -7,14 +7,18 @@ public class PersonDTO {
     private String firstName;
     private String lastName;
     private String phone;
+    private String street;
+    private int zip;
+    private String city;
 
     public PersonDTO(Person p) {
+        if (p.getId() != null) { this.id = p.getId(); }
         this.firstName = p.getFirstName();
         this.lastName = p.getLastName();
         this.phone = p.getPhone();
-        if (p.getId() != null) {
-            this.id = p.getId();
-        }
+        this.street = p.getAddress().getStreet();
+        this.zip = p.getAddress().getZip();
+        this.city = p.getAddress().getCity();
     }
 
     public Integer getId() {
