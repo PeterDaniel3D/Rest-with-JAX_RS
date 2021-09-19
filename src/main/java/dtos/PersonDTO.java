@@ -12,7 +12,7 @@ public class PersonDTO {
     private String city;
 
     public PersonDTO(Person p) {
-        if (p.getId() != null) { this.id = p.getId(); }
+        this.id = p.getId();
         this.firstName = p.getFirstName();
         this.lastName = p.getLastName();
         this.phone = p.getPhone();

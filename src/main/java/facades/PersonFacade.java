@@ -3,6 +3,7 @@ package facades;
 import dtos.PersonDTO;
 
 import dtos.PersonsDTO;
+import entities.Address;
 import entities.Person;
 import errorhandling.MissingInputException;
 import errorhandling.PersonNotFoundException;
@@ -57,12 +58,14 @@ public class PersonFacade implements IPersonFacade {
     public PersonDTO deletePerson(int id) throws PersonNotFoundException {
         EntityManager em = getEntityManager();
         Person person = em.find(Person.class, id);
+        Address address = em.find(Address.class, person.getAddress().getId());
         if (person == null) {
             throw new PersonNotFoundException(404, "Could not delete, provided id does not exist");
         }
         try {
             em.getTransaction().begin();
             em.remove(person);
+            em.remove(address);
             em.getTransaction().commit();
         } finally {
             em.close();
