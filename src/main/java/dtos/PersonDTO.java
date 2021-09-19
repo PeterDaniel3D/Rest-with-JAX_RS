@@ -1,5 +1,6 @@
 package dtos;
 
+import entities.Address;
 import entities.Person;
 
 public class PersonDTO {
@@ -8,7 +9,7 @@ public class PersonDTO {
     private String lastName;
     private String phone;
     private String street;
-    private int zip;
+    private Integer zip;
     private String city;
 
     public PersonDTO(Person p) {
@@ -51,5 +52,29 @@ public class PersonDTO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public Integer getZip() {
+        return zip;
+    }
+
+    public void setZip(Integer zip) {
+        this.zip = zip;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

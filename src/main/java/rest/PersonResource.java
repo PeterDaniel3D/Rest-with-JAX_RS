@@ -48,9 +48,35 @@ public class PersonResource {
     @Consumes({MediaType.APPLICATION_JSON})
     public Response addPerson(String str) throws MissingInputException {
         PersonDTO pDTO = GSON.fromJson(str, PersonDTO.class);
-        PersonDTO result = FACADE.addPerson(pDTO.getFirstName(), pDTO.getLastName(), pDTO.getPhone());
+        PersonDTO result;
+        if ((pDTO.getStreet() != null) || (pDTO.getZip() != null) || (pDTO.getStreet() != null)) {
+            result = FACADE.addPersonAddress(
+                pDTO.getFirstName(),
+                pDTO.getLastName(),
+                pDTO.getPhone(),
+                pDTO.getStreet(),
+                pDTO.getZip(),
+                pDTO.getCity());
+        } else {
+            result = FACADE.addPerson(pDTO.getFirstName(), pDTO.getLastName(), pDTO.getPhone());
+        }
         return Response.ok().entity(GSON.toJson(result)).build();
     }
+//
+//    @POST
+//    @Produces({MediaType.APPLICATION_JSON})
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    public Response addPersonAddress(String str) throws MissingInputException {
+//        PersonDTO pDTO = GSON.fromJson(str, PersonDTO.class);
+//        PersonDTO result = FACADE.addPersonAddress(
+//                pDTO.getFirstName(),
+//                pDTO.getLastName(),
+//                pDTO.getPhone(),
+//                pDTO.getStreet(),
+//                pDTO.getZip(),
+//                pDTO.getCity());
+//        return Response.ok().entity(GSON.toJson(result)).build();
+//    }
 
     @PUT
     @Path("{id}")

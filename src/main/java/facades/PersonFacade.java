@@ -55,6 +55,27 @@ public class PersonFacade implements IPersonFacade {
     }
 
     @Override
+    public PersonDTO addPersonAddress(String fName, String lName, String phone, String street, Integer zip, String city) throws MissingInputException {
+        Person person = new Person(fName, lName, phone);
+        Address address = new Address(street, zip, city);
+        person.setAddress(address);
+
+        if ((fName == null) || (lName == null)) {
+            throw new MissingInputException(400, "First Name and/or Last Name is missing");
+        }
+
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(person);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new PersonDTO(person);
+    }
+
+    @Override
     public PersonDTO deletePerson(int id) throws PersonNotFoundException {
         EntityManager em = getEntityManager();
         Person person = em.find(Person.class, id);

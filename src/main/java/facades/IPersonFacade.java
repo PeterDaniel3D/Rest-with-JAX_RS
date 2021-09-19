@@ -8,6 +8,8 @@ import errorhandling.PersonNotFoundException;
 public interface IPersonFacade {
     public PersonDTO addPerson(String fName, String lName, String phone) throws MissingInputException;
 
+    public PersonDTO addPersonAddress(String fName, String lName, String phone, String street, Integer zip, String city) throws MissingInputException;
+
     public PersonDTO deletePerson(int id) throws PersonNotFoundException;
 
     public PersonDTO getPerson(int id) throws PersonNotFoundException;
