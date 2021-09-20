@@ -26,7 +26,8 @@ public class Person implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastEdited;
 
-    @OneToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "address_fk_id", referencedColumnName = "id")
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     private Address address;
 
     public Person() {
@@ -103,7 +104,7 @@ public class Person implements Serializable {
     public void setAddress(Address address) {
         this.address = address;
         if (address != null) {
-            address.setPerson(this);
+            address.addPerson(this);
         }
     }
 }

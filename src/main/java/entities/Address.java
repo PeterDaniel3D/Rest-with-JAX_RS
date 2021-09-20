@@ -2,6 +2,8 @@ package entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = Address.TABLE_NAME)
 @Entity
@@ -18,8 +20,8 @@ public class Address implements Serializable {
     private int zip;
     private String city;
 
-    @OneToOne(mappedBy = "address")
-    private Person person;
+    @OneToMany(mappedBy = "address")
+    private List<Person> persons = new ArrayList<>();
 
     public Address() {
     }
@@ -62,11 +64,11 @@ public class Address implements Serializable {
         this.city = city;
     }
 
-    public Person getPerson() {
-        return person;
+    public List<Person> getPersons() {
+        return persons;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void addPerson(Person p) {
+        this.persons.add(p);
     }
 }
