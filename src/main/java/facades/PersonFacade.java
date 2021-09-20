@@ -115,23 +115,25 @@ public class PersonFacade implements IPersonFacade {
     public PersonDTO editPerson(PersonDTO pDTO) throws PersonNotFoundException, MissingInputException {
         EntityManager em = getEntityManager();
 
-        Person person = em.find(Person.class, pDTO.getId());
-        if (person == null) {
-            throw new PersonNotFoundException(404, "Could not update, provided id does not exist");
-        }
+//        Person person = em.find(Person.class, pDTO.getId());
+//        if (person == null) {
+//            throw new PersonNotFoundException(404, "Could not update, provided id does not exist");
+//        }
+//
+//        if ((pDTO.getFirstName() == null) || (pDTO.getLastName() == null)) {
+//            throw new MissingInputException(400, "First Name and/or Last Name is missing");
+//        }
+//
+//        person.setFirstName(pDTO.getFirstName());
+//        person.setLastName(pDTO.getLastName());
+//        person.setPhone(pDTO.getPhone());
+//        person.setLastEdited(new Date());
 
-        if ((pDTO.getFirstName() == null) || (pDTO.getLastName() == null)) {
-            throw new MissingInputException(400, "First Name and/or Last Name is missing");
-        }
-
-        person.setFirstName(pDTO.getFirstName());
-        person.setLastName(pDTO.getLastName());
-        person.setPhone(pDTO.getPhone());
-        person.setLastEdited(new Date());
-
+        Person person = new Person(pDTO.getFirstName(), pDTO.getLastName(), pDTO.getPhone());
+        person.setId(pDTO.getId());
         try {
             em.getTransaction().begin();
-            //em.merge(person); <-- Koden virker uden?
+            em.merge(person); //<-- Koden virker uden?
             em.getTransaction().commit();
         } finally {
             em.close();

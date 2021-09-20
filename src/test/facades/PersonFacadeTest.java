@@ -13,6 +13,8 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonFacadeTest {
@@ -61,9 +63,11 @@ class PersonFacadeTest {
 
     @Test
     public void addPerson() throws MissingInputException {
-//        PersonDTO expected = new PersonDTO(new Person("Test1", "Test2", "12345678"));
-//        PersonDTO actual = facade.addPerson("Test1", "Test2", "12345678");
-//        assertEquals(expected.getFirstName(), actual.getFirstName());
+        PersonDTO expected = new PersonDTO(p1);
+        PersonDTO actual = facade.addPerson("PF1", "PL1", "11111111");
+        //assertEquals(expected, actual);
+        assertTrue(Objects.equals(expected.getFirstName(), actual.getFirstName()) &&
+                Objects.equals(expected.getLastName(), actual.getLastName()));
     }
 
     @Test
@@ -86,7 +90,10 @@ class PersonFacadeTest {
     }
 
     @Test
-    public void editPerson() {
-
+    public void editPerson() throws MissingInputException, PersonNotFoundException {
+        p1.setFirstName("Peter");
+        PersonDTO expected = new PersonDTO(p1);
+        PersonDTO actual = facade.editPerson(new PersonDTO(p1));
+        assertEquals(expected, actual);
     }
 }

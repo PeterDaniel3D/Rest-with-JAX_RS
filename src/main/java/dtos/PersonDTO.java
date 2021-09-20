@@ -2,6 +2,8 @@ package dtos;
 
 import entities.Person;
 
+import java.util.Objects;
+
 public class PersonDTO {
     private Integer id;
     private String firstName;
@@ -77,5 +79,18 @@ public class PersonDTO {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonDTO personDTO = (PersonDTO) o;
+        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName);
     }
 }
